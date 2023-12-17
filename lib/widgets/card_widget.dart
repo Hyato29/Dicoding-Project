@@ -14,15 +14,19 @@ class CardWidget extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.width * 0.4,
+        width: 100,
+        height: MediaQuery.of(context).size.width * 0.2,
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
             color: const Color.fromARGB(255, 255, 241, 39),
             borderRadius: BorderRadius.circular(5)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const SizedBox(
+              height: 15,
+            ),
             ClipOval(
               child: SizedBox(
                 width: MediaQuery.of(context).size.height * 0.1,
@@ -42,6 +46,9 @@ class CardWidget extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium),
             ),
+            const SizedBox(
+              height: 10,
+            )
           ],
         ),
       ),
