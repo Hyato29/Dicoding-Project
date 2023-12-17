@@ -16,7 +16,6 @@ class AddReviewsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Consumer<AddReviewsProvider>(
       builder: (context, value, child) {
         return Container(
@@ -57,47 +56,50 @@ class AddReviewsScreen extends StatelessWidget {
                 )
               ],
             ),
-            content: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AddCommentWidget(
-                      titleCard: "Username",
-                      controller: nameController,
-                      maxLines: 1,
-                    ),
-                    AddCommentWidget(
-                      titleCard: "Comment",
-                      controller: reviewController,
-                      maxLines: 5,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  height: 42,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      await value.postReview(AddRequestReviewsModel(
-                          id: id,
-                          name: nameController.text,
-                          review: reviewController.text));
-                      // ignore: use_build_context_synchronously
-                      Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber,
-                    ),
-                    child: Text("Simpan",
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(color: Colors.white)),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AddCommentWidget(
+                        titleCard: "Username",
+                        controller: nameController,
+                        maxLines: 1,
+                      ),
+                      AddCommentWidget(
+                        titleCard: "Comment",
+                        controller: reviewController,
+                        maxLines: 5,
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 42,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        await value.postReview(AddRequestReviewsModel(
+                            id: id,
+                            name: nameController.text,
+                            review: reviewController.text));
+                        // ignore: use_build_context_synchronously
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.amber,
+                      ),
+                      child: Text("Simpan",
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(color: Colors.white)),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );
