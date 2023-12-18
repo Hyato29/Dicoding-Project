@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: CircularProgressIndicator(),
                         );
                       } else if (value.state == LoadingState.loaded) {
-                        return cardItem(value, 8);
+                        return cardItem(value, 8, "recommendation");
                       } else if (value.state == LoadingState.noData) {
                         return Center(
                           child: Material(
@@ -111,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: CircularProgressIndicator(),
                         );
                       } else if (value.state == LoadingState.loaded) {
-                        return cardItem(value, 5);
+                        return cardItem(value, 5, "popular");
                       } else if (value.state == LoadingState.noData) {
                         return Center(
                           child: Material(
@@ -135,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  ListView cardItem(RestaurantProvider value, int itemCount) {
+  ListView cardItem(RestaurantProvider value, int itemCount, String tag) {
     return ListView.separated(
       itemCount: itemCount,
       separatorBuilder: (context, index) => const SizedBox(
@@ -144,8 +144,9 @@ class _HomeScreenState extends State<HomeScreen> {
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
         var items = value.restauranResult.restaurants[index];
+        String heroTag = "$tag${items.pictureId}";
         return CardWidget(
-            restaurant: items,
+            items: items,
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 String id = items.id;
@@ -155,7 +156,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: DetailScreen(id: id),
                 );
               }));
-            });
+            },
+            heroTag: heroTag,);
       },
     );
   }

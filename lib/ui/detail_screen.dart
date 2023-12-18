@@ -93,9 +93,12 @@ class _DetailScreenState extends State<DetailScreen> {
         child: SizedBox(
           width: double.infinity,
           height: 250,
-          child: Image(
-            image: NetworkImage(imgMedium + items.pictureId),
-            fit: BoxFit.cover,
+          child: Hero(
+            tag: "restaurant_${imgMedium + items.pictureId}",
+            child: Image.network(
+              imgMedium + items.pictureId,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ),

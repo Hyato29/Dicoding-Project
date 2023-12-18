@@ -4,10 +4,11 @@ import 'package:restaurant_v2/data/models/restaurant_model.dart';
 
 // ignore: must_be_immutable
 class CardWidget extends StatelessWidget {
-  CardWidget({required this.restaurant, required this.onTap, super.key});
+  CardWidget({required this.items, required this.onTap, required this.heroTag, super.key});
 
-  Restaurant restaurant;
+  Restaurant items;
   Function() onTap;
+  String heroTag;
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +32,12 @@ class CardWidget extends StatelessWidget {
               child: SizedBox(
                 width: MediaQuery.of(context).size.height * 0.1,
                 height: MediaQuery.of(context).size.height * 0.1,
-                child: Image(
-                  image: NetworkImage(imgMedium + restaurant.pictureId),
-                  fit: BoxFit.cover,
+                child: Hero(
+                  tag: heroTag,
+                  child: Image.network(
+                    imgMedium + items.pictureId,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
@@ -41,7 +45,7 @@ class CardWidget extends StatelessWidget {
               height: 5,
             ),
             Expanded(
-              child: Text(restaurant.name,
+              child: Text(items.name,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium),

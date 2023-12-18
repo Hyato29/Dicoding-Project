@@ -138,15 +138,11 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
               );
             } else if (value.state == LoadingState.noData) {
               return Center(
-                child: Material(
-                  child: Text(value.message),
-                ),
+                child: Text(value.message),
               );
             } else if (value.state == LoadingState.error) {
               return Center(
-                child: Material(
-                  child: Text(value.message),
-                ),
+                child: Text(value.message),
               );
             }
             return const SizedBox();

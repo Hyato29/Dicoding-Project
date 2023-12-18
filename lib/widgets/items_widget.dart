@@ -40,10 +40,13 @@ class ItemsWidget extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(5),
-                  child: Image(
-                    image: NetworkImage(urlImage),
-                    fit: BoxFit.cover,
-                  ),
+                  child: 
+                    Hero(
+                      tag: "restaurant_$urlImage",
+                      child: Image.network(urlImage,
+                      fit: BoxFit.cover,
+                                        ),
+                    ),
                 ),
               ),
             ),
