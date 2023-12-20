@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:restaurant_v2/data/models/loading_state.dart';
 import 'package:restaurant_v2/data/services/api_services.dart';
 import 'package:restaurant_v2/provider/restaurant_detail_provider.dart';
-import 'package:restaurant_v2/provider/restaurant_provider.dart';
 import 'package:restaurant_v2/provider/search_restaurant_provider.dart';
 import 'package:restaurant_v2/ui/detail_screen.dart';
 import 'package:restaurant_v2/widgets/items_widget.dart';
@@ -32,9 +31,11 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
         builder: (context, child) {
           return Scaffold(
             appBar: AppBar(
-                backgroundColor: Colors.amber,
-                title: const Text(
-                  'List of Restaurant',
+                backgroundColor: Colors.white,
+                title: Text(
+                  'Search Restaurant',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold, letterSpacing: 0.50),
                 )),
             body: SafeArea(
               child: SingleChildScrollView(
@@ -43,22 +44,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                       left: 16, right: 16, top: 20, bottom: 10),
                   child: Column(
                     children: [
-                      TextField(
-                        controller: searchController,
-                        onChanged: (value) {
-                          var query = searchController.text;
-                          Provider.of<SearchRestaurantProvider>(context,
-                                  listen: false)
-                              .searchRestaurant(value = query);
-                        },
-                        decoration: InputDecoration(
-                            prefixIcon: const Icon(Icons.search),
-                            hintText: "Search Restaurant",
-                            hintStyle: Theme.of(context).textTheme.bodyLarge,
-                            border: const OutlineInputBorder(),
-                            enabledBorder: const OutlineInputBorder()),
-                        showCursor: true,
-                      ),
+                      searchField(context),
                       const SizedBox(
                         height: 18,
                       ),
@@ -93,6 +79,24 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
         });
   }
 
+  TextField searchField(BuildContext context) {
+    return TextField(
+      controller: searchController,
+      onChanged: (value) {
+        var query = searchController.text;
+        Provider.of<SearchRestaurantProvider>(context, listen: false)
+            .searchRestaurant(value = query);
+      },
+      decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.search),
+          hintText: "Search Restaurant",
+          hintStyle: Theme.of(context).textTheme.bodyLarge,
+          border: const OutlineInputBorder(),
+          enabledBorder: const OutlineInputBorder()),
+      showCursor: true,
+    );
+  }
+
   SizedBox onSearchRestaurant(BuildContext context) {
     return SizedBox(
         width: double.infinity,
@@ -104,38 +108,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                 child: CircularProgressIndicator(),
               );
             } else if (value.state == LoadingState.loaded) {
-              return ListView.separated(
-                separatorBuilder: (context, index) => const SizedBox(
-                  height: 12,
-                ),
-                itemCount: context
-                    .watch<SearchRestaurantProvider>()
-                    .searchRestauranResult
-                    .founded,
-                itemBuilder: (context, index) {
-                  var items = context
-                      .watch<SearchRestaurantProvider>()
-                      .searchRestauranResult
-                      .restaurants[index];
-                  return ItemsWidget(
-                    title: items.name,
-                    subTitle: items.city,
-                    rating: items.rating,
-                    urlImage: imgMedium + items.pictureId,
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        String id = items.id;
-                        return ChangeNotifierProvider<RestaurantDetailProvider>(
-                          create: (_) => RestaurantDetailProvider(
-                              apiService: ApiService(), id: id),
-                          child: DetailScreen(id: id),
-                        );
-                      }));
-                    },
-                  );
-                },
-              );
+              return restaurantItems(context);
             } else if (value.state == LoadingState.noData) {
               return Center(
                 child: Text(value.message),
@@ -150,19 +123,26 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
         ));
   }
 
-  ListView listRestaurant(RestaurantProvider value) {
+  ListView restaurantItems(BuildContext context) {
     return ListView.separated(
       separatorBuilder: (context, index) => const SizedBox(
         height: 12,
       ),
-      itemCount: value.restauranResult.restaurants.length,
+      itemCount: context
+          .watch<SearchRestaurantProvider>()
+          .searchRestauranResult
+          .founded,
       itemBuilder: (context, index) {
-        var items = value.restauranResult.restaurants[index];
+        var items = context
+            .watch<SearchRestaurantProvider>()
+            .searchRestauranResult
+            .restaurants[index];
         return ItemsWidget(
           title: items.name,
           subTitle: items.city,
           rating: items.rating,
           urlImage: imgMedium + items.pictureId,
+          heroTag: "detail-${items.pictureId}",
           onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               String id = items.id;

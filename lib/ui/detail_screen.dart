@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_v2/data/db/database_helper.dart';
 import 'package:restaurant_v2/data/models/loading_state.dart';
 import 'package:restaurant_v2/data/models/restaurant_detail_model.dart';
 import 'package:restaurant_v2/data/services/api_services.dart';
 import 'package:restaurant_v2/provider/add_reviews_provider.dart';
+import 'package:restaurant_v2/provider/database_provider.dart';
 import 'package:restaurant_v2/provider/restaurant_detail_provider.dart';
 import 'package:restaurant_v2/ui/add_reviews_screen.dart';
 import 'package:restaurant_v2/widgets/comment_widget.dart';
@@ -23,7 +25,7 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   bool isLoading = false;
 
-  Future<void> reload() async {
+  Future<void> reloadScreen() async {
     setState(() {
       isLoading = true;
     });
@@ -37,7 +39,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   void initState() {
-    reload();
+    reloadScreen();
     super.initState();
   }
 
@@ -65,7 +67,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           child: CircularProgressIndicator(),
                         );
                       } else if (value.state == LoadingState.loaded) {
-                        var items = value.restauranDetailResult.restaurant;
+                        var items = value.restauranDetailResult;
                         return itemDetail(items, context);
                       } else if (value.state == LoadingState.noData) {
                         return Center(
@@ -86,80 +88,11 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  Column itemDetail(Restaurant items, BuildContext context) {
+  Column itemDetail(RestaurantDetailModel items, BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: SizedBox(
-          width: double.infinity,
-          height: 250,
-          child: Hero(
-            tag: "restaurant_${imgMedium + items.pictureId}",
-            child: Image.network(
-              imgMedium + items.pictureId,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      ),
-      const SizedBox(
-        height: 24,
-      ),
-      Text(
-        items.name,
-        style: Theme.of(context)
-            .textTheme
-            .titleLarge
-            ?.copyWith(fontWeight: FontWeight.bold),
-      ),
-      const SizedBox(
-        height: 5,
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Icon(
-                Icons.location_on,
-                color: Color.fromARGB(255, 255, 17, 0),
-                size: 20,
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(items.city,
-                      style: Theme.of(context).textTheme.titleLarge),
-                  const SizedBox(
-                    width: 25,
-                  ),
-                  Text(items.address,
-                      style: Theme.of(context).textTheme.titleMedium),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(
-            width: 20,
-          ),
-          const Icon(
-            Icons.star,
-            size: 20,
-          ),
-          const SizedBox(
-            width: 5,
-          ),
-          Text(items.rating.toString(),
-              style: Theme.of(context).textTheme.titleLarge),
-        ],
-      ),
+      ChangeNotifierProvider<DatabaseProvider>(
+          create: (_) => DatabaseProvider(databaseHelper: DatabaseHelper()),
+          child: cardRestaurant(context, items)),
       const SizedBox(
         height: 25,
       ),
@@ -171,7 +104,7 @@ class _DetailScreenState extends State<DetailScreen> {
       const SizedBox(
         height: 10,
       ),
-      Text(items.description,
+      Text(items.restaurant.description,
           textAlign: TextAlign.justify,
           style: Theme.of(context).textTheme.titleMedium),
       const SizedBox(
@@ -188,7 +121,7 @@ class _DetailScreenState extends State<DetailScreen> {
       SizedBox(
         width: double.infinity,
         height: 80,
-        child: itemFoods(items),
+        child: itemFoods(items.restaurant),
       ),
       const SizedBox(
         height: 25,
@@ -204,7 +137,7 @@ class _DetailScreenState extends State<DetailScreen> {
       SizedBox(
         width: double.infinity,
         height: 80,
-        child: itemDrinks(items),
+        child: itemDrinks(items.restaurant),
       ),
       const SizedBox(
         height: 25,
@@ -229,7 +162,7 @@ class _DetailScreenState extends State<DetailScreen> {
             )
           : ChangeNotifierProvider<AddReviewsProvider>(
               create: (context) =>
-                  AddReviewsProvider(apiService: ApiService(), id: items.id),
+                  AddReviewsProvider(apiService: ApiService(), id: items.restaurant.id),
               child: Container(
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.5,
@@ -262,12 +195,12 @@ class _DetailScreenState extends State<DetailScreen> {
                 builder: (context) =>
                     ChangeNotifierProvider<AddReviewsProvider>(
                       create: (context) => AddReviewsProvider(
-                          apiService: ApiService(), id: items.id),
+                          apiService: ApiService(), id: items.restaurant.id),
                       child: AddReviewsScreen(
-                        id: items.id,
+                        id: items.restaurant.id,
                       ),
                     ));
-            reload();
+            reloadScreen();
           },
           style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
@@ -286,6 +219,122 @@ class _DetailScreenState extends State<DetailScreen> {
     ]);
   }
 
+  SizedBox cardRestaurant(BuildContext context, RestaurantDetailModel items) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.4,
+      width: double.infinity,
+      child: Card(
+        elevation: 5,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Consumer<DatabaseProvider>(
+          builder: (context, value, child) {
+            return FutureBuilder<bool>(
+              future: value.isFavorites(items.restaurant.id),
+              builder: (context, snapshot) {
+                var isFavorites = snapshot.data ?? false;
+                return Stack(children: [
+                  ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Hero(
+                          tag: "detail-${items.restaurant.pictureId}",
+                          child: Image.network(imgMedium + items.restaurant.pictureId))),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * 0.13,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 18, vertical: 18),
+                      decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10))),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            items.restaurant.name,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.location_on,
+                                color: Colors.red,
+                              ),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  "${items.restaurant.city} - ${items.restaurant.address}",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              const SizedBox(width: 20),
+                              const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                items.restaurant.rating.toString(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 1,
+                                        color: Colors.amber),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: MediaQuery.of(context).size.height * 0.1,
+                    right: MediaQuery.of(context).size.width * 0.05,
+                    child: ClipOval(
+                      child: isFavorites
+                          ? FloatingActionButton(
+                              backgroundColor: Colors.amber,
+                              onPressed: () => value.removeFavorites(items.restaurant.id),
+                              child: const Icon(
+                                Icons.favorite,
+                                color: Colors.red,
+                              ),
+                            )
+                          : FloatingActionButton(
+                              backgroundColor: Colors.amber,
+                              onPressed: () =>
+                                  value.addFavorites(items),
+                              child: const Icon(
+                                Icons.favorite,
+                                color: Colors.white,
+                              ),
+                            ),
+                    ),
+                  )
+                ]);
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   ListView customerReviews(AddReviewsProvider value) {
     return ListView.builder(
       itemCount: value.restauranReviews.restaurant.customerReviews.length,
@@ -300,7 +349,7 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  ListView itemDrinks(Restaurant items) {
+  ListView itemDrinks(DetailRestaurant items) {
     return ListView.separated(
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
@@ -313,7 +362,7 @@ class _DetailScreenState extends State<DetailScreen> {
         itemCount: items.menus.drinks.length);
   }
 
-  ListView itemFoods(Restaurant items) {
+  ListView itemFoods(DetailRestaurant items) {
     return ListView.separated(
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {

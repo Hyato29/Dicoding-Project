@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:restaurant_v2/data/models/add%20reviews%20models/add_request_review_model.dart';
-import 'package:restaurant_v2/data/models/add%20reviews%20models/add_response_review_model.dart';
+import 'package:restaurant_v2/data/models/customer_reviews/add_request_review_model.dart';
+import 'package:restaurant_v2/data/models/customer_reviews/add_response_review_model.dart';
 import 'package:restaurant_v2/data/models/restaurant_detail_model.dart';
 import 'package:restaurant_v2/data/models/restaurant_model.dart';
 import 'package:http/http.dart' as http;

@@ -20,8 +20,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Colors.amber,
-          title: const Text(
+          title: Text(
             'Restaurant App',
+            style: Theme.of(context)
+                .textTheme
+                .headlineSmall
+                ?.copyWith(fontWeight: FontWeight.bold, letterSpacing: 0.50),
           )),
       body: SafeArea(
           child: SingleChildScrollView(
@@ -31,9 +35,11 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Recommendation Restaurant for You !",
-                maxLines: 2,
-                style: Theme.of(context).textTheme.titleLarge,
+                "Recommendation Restaurant \nfor You !",
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(
                 height: 12,
@@ -52,18 +58,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 12,
               ),
               Text(
-                "Recommendation",
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge
-                    ?.copyWith(fontWeight: FontWeight.bold),
+                "Restaurants",
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold, letterSpacing: 0.50),
               ),
               const SizedBox(
                 height: 12,
               ),
               SizedBox(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.2,
+                  height: MediaQuery.of(context).size.height,
                   child: Consumer<RestaurantProvider>(
                     builder: (context, value, child) {
                       if (value.state == LoadingState.loading) {
@@ -71,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: CircularProgressIndicator(),
                         );
                       } else if (value.state == LoadingState.loaded) {
-                        return cardItem(value, 8, "recommendation");
+                        return cardItem(value);
                       } else if (value.state == LoadingState.noData) {
                         return Center(
                           child: Material(
@@ -88,46 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       return const SizedBox();
                     },
                   )),
-              const SizedBox(
-                height: 12,
-              ),
-              Text(
-                "Popular",
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge
-                    ?.copyWith(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              SizedBox(
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  child: Consumer<RestaurantProvider>(
-                    builder: (context, value, child) {
-                      if (value.state == LoadingState.loading) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (value.state == LoadingState.loaded) {
-                        return cardItem(value, 5, "popular");
-                      } else if (value.state == LoadingState.noData) {
-                        return Center(
-                          child: Material(
-                            child: Text(value.message),
-                          ),
-                        );
-                      } else if (value.state == LoadingState.error) {
-                        return Center(
-                          child: Material(
-                            child: Text(value.message),
-                          ),
-                        );
-                      }
-                      return const SizedBox();
-                    },
-                  ))
             ],
           ),
         ),
@@ -135,16 +99,19 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  ListView cardItem(RestaurantProvider value, int itemCount, String tag) {
-    return ListView.separated(
-      itemCount: itemCount,
-      separatorBuilder: (context, index) => const SizedBox(
-        width: 12,
+  GridView cardItem(RestaurantProvider value) {
+    return GridView.builder(
+      padding: EdgeInsets.zero,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        childAspectRatio: 1.0,
+        crossAxisCount: 2,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 10,
       ),
-      scrollDirection: Axis.horizontal,
+      itemCount: value.restauranResult.restaurants.length,
+      shrinkWrap: true,
       itemBuilder: (context, index) {
         var items = value.restauranResult.restaurants[index];
-        String heroTag = "$tag${items.pictureId}";
         return CardWidget(
             items: items,
             onTap: () {
@@ -157,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               }));
             },
-            heroTag: heroTag,);
+            heroTag: "detail-${items.pictureId}");
       },
     );
   }

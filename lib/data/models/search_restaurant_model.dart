@@ -1,7 +1,7 @@
 class SearchRestaurantModel {
   bool error;
   int founded;
-  List<Restaurant> restaurants;
+  List<SearchRestaurant> restaurants;
 
   SearchRestaurantModel({
     required this.error,
@@ -13,8 +13,8 @@ class SearchRestaurantModel {
       SearchRestaurantModel(
         error: json["error"],
         founded: json["founded"],
-        restaurants: List<Restaurant>.from(
-            json["restaurants"].map((x) => Restaurant.fromJson(x))),
+        restaurants: List<SearchRestaurant>.from(
+            json["restaurants"].map((x) => SearchRestaurant.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -24,7 +24,7 @@ class SearchRestaurantModel {
       };
 }
 
-class Restaurant {
+class SearchRestaurant {
   String id;
   String name;
   String description;
@@ -32,7 +32,7 @@ class Restaurant {
   String city;
   double rating;
 
-  Restaurant({
+  SearchRestaurant({
     required this.id,
     required this.name,
     required this.description,
@@ -41,7 +41,7 @@ class Restaurant {
     required this.rating,
   });
 
-  factory Restaurant.fromJson(Map<String, dynamic> json) => Restaurant(
+  factory SearchRestaurant.fromJson(Map<String, dynamic> json) => SearchRestaurant(
         id: json["id"],
         name: json["name"],
         description: json["description"],

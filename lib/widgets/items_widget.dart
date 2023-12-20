@@ -7,6 +7,7 @@ class ItemsWidget extends StatelessWidget {
       required this.title,
       required this.subTitle,
       required this.rating,
+      required this.heroTag,
       required this.onTap,
       super.key});
 
@@ -14,98 +15,84 @@ class ItemsWidget extends StatelessWidget {
   String title;
   String subTitle;
   double rating;
+  String heroTag;
   Function() onTap;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 255, 241, 39),
-            borderRadius: BorderRadius.circular(5)),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(
+        onTap: onTap,
+        child: Card(
+          elevation: 10,
+          margin: const EdgeInsets.all(10),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Stack(children: [
+            ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Hero(tag: heroTag, child: Image.network(urlImage))),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
               child: Container(
-                width: 120,
-                height: 80,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white, width: 2),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: 
-                    Hero(
-                      tag: "restaurant_$urlImage",
-                      child: Image.network(urlImage,
-                      fit: BoxFit.cover,
-                                        ),
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.1,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10))),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      title,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on,
+                          color: Colors.red,
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          subTitle,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(width: 20),
+                        const Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          rating.toString(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.amber,
+                                  letterSpacing: 1),
+                        )
+                      ],
+                    )
+                  ],
                 ),
               ),
             ),
-            const SizedBox(
-              width: 24,
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const Icon(
-                        Icons.location_on,
-                        color: Color.fromARGB(255, 255, 17, 0),
-                        size: 20,
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Expanded(
-                        child: Text(subTitle,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.titleMedium),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const Icon(
-                        Icons.star,
-                        size: 20,
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Text("$rating",
-                          style: Theme.of(context).textTheme.titleMedium),
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+          ]),
+        ));
   }
 }

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_v2/data/db/database_helper.dart';
 import 'package:restaurant_v2/data/services/api_services.dart';
+import 'package:restaurant_v2/provider/database_provider.dart';
 import 'package:restaurant_v2/provider/restaurant_provider.dart';
 import 'package:restaurant_v2/provider/search_restaurant_provider.dart';
 import 'package:restaurant_v2/ui/about_screen.dart';
+import 'package:restaurant_v2/ui/favorite_screen.dart';
 import 'package:restaurant_v2/ui/home_screen.dart';
 import 'package:restaurant_v2/ui/restaurant_screen.dart';
 
@@ -31,6 +34,10 @@ class _MainPageState extends State<MainPage> {
             create: (_) => SearchRestaurantProvider(apiService: ApiService()),
             child: const RestaurantScreen());
       case 2:
+        return ChangeNotifierProvider<DatabaseProvider>(
+          create: (_) => DatabaseProvider(databaseHelper: DatabaseHelper()),
+          child: const FavoriteScreen());
+      case 3:
         return const AboutScreen();
       default:
         return const HomeScreen();
@@ -51,12 +58,18 @@ class _MainPageState extends State<MainPage> {
           currentIndex: currentIndex,
           showSelectedLabels: false,
           showUnselectedLabels: false,
+          unselectedItemColor: Colors.grey,
           items: [
             BottomNavigationBarItem(
                 icon: isSelected
                     ? const Icon(Icons.home_outlined)
                     : const Icon(Icons.home),
                 label: "Home"),
+            BottomNavigationBarItem(
+                icon: isSelected
+                    ? const Icon(Icons.search_outlined)
+                    : const Icon(Icons.search),
+                label: "Search"),
             BottomNavigationBarItem(
                 icon: isSelected
                     ? const Icon(Icons.favorite_outlined)
