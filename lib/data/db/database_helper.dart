@@ -1,4 +1,3 @@
-import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:restaurant_v2/data/models/restaurant_detail_model.dart';
 
@@ -59,7 +58,11 @@ class DatabaseHelper {
     for (Category category in restaurantModel.restaurant.categories) {
       await db.insert(
         'categories',
-        {'id': category.name, 'restaurantId': restaurantModel.restaurant.id, 'name': category.name},
+        {
+          'id': category.name,
+          'restaurantId': restaurantModel.restaurant.id,
+          'name': category.name
+        },
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     }
@@ -68,7 +71,11 @@ class DatabaseHelper {
     for (Category food in restaurantModel.restaurant.menus.foods) {
       await db.insert(
         'foods',
-        {'id': food.name, 'restaurantId': restaurantModel.restaurant.id, 'name': food.name},
+        {
+          'id': food.name,
+          'restaurantId': restaurantModel.restaurant.id,
+          'name': food.name
+        },
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     }
@@ -76,17 +83,22 @@ class DatabaseHelper {
     for (Category drink in restaurantModel.restaurant.menus.drinks) {
       await db.insert(
         'drinks',
-        {'id': drink.name, 'restaurantId': restaurantModel.restaurant.id, 'name': drink.name},
+        {
+          'id': drink.name,
+          'restaurantId': restaurantModel.restaurant.id,
+          'name': drink.name
+        },
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     }
 
-    // Insert ulasan pelanggan
+    // Insert Customer Review
     for (CustomerReview review in restaurantModel.restaurant.customerReviews) {
       await db.insert(
         'customer_reviews',
         {
-          'id': '${restaurantModel.restaurant.id}_${review.name}_${review.date}',
+          'id':
+              '${restaurantModel.restaurant.id}_${review.name}_${review.date}',
           'restaurantId': restaurantModel.restaurant.id,
           'name': review.name,
           'review': review.review,
@@ -113,9 +125,9 @@ class DatabaseHelper {
           address: res['address'],
           pictureId: res['pictureId'],
           rating: res['rating'].toDouble(),
-          categories: [], // Perlu diperbarui dengan mendapatkan kategori dari database
-          menus: Menus(foods: [], drinks: []), // Perlu diperbarui dengan mendapatkan menu dari database
-          customerReviews: [], // Perlu diperbarui dengan mendapatkan ulasan dari database
+          categories: [],
+          menus: Menus(foods: [], drinks: []),
+          customerReviews: [],
         ),
       );
     }).toList();

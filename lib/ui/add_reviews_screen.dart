@@ -1,4 +1,3 @@
-// File: ui/add_reviews_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_v2/data/models/customer_reviews/add_request_review_model.dart';
@@ -13,6 +12,7 @@ class AddReviewsScreen extends StatelessWidget {
 
   TextEditingController nameController = TextEditingController();
   TextEditingController reviewController = TextEditingController();
+  
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,6 @@ class AddReviewsScreen extends StatelessWidget {
                             id: id,
                             name: nameController.text,
                             review: reviewController.text));
-                        // ignore: use_build_context_synchronously
                         Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(

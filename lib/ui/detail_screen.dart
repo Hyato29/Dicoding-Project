@@ -49,7 +49,7 @@ class _DetailScreenState extends State<DetailScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.keyboard_arrow_left_rounded),
-          onPressed: () {
+          onPressed: () async {
             Navigator.pop(context);
           },
         ),
@@ -161,8 +161,8 @@ class _DetailScreenState extends State<DetailScreen> {
                   )),
             )
           : ChangeNotifierProvider<AddReviewsProvider>(
-              create: (context) =>
-                  AddReviewsProvider(apiService: ApiService(), id: items.restaurant.id),
+              create: (context) => AddReviewsProvider(
+                  apiService: ApiService(), id: items.restaurant.id),
               child: Container(
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.5,
@@ -237,7 +237,8 @@ class _DetailScreenState extends State<DetailScreen> {
                       borderRadius: BorderRadius.circular(10),
                       child: Hero(
                           tag: "detail-${items.restaurant.pictureId}",
-                          child: Image.network(imgMedium + items.restaurant.pictureId))),
+                          child: Image.network(
+                              imgMedium + items.restaurant.pictureId))),
                   Positioned(
                     bottom: 0,
                     left: 0,
@@ -309,7 +310,8 @@ class _DetailScreenState extends State<DetailScreen> {
                       child: isFavorites
                           ? FloatingActionButton(
                               backgroundColor: Colors.amber,
-                              onPressed: () => value.removeFavorites(items.restaurant.id),
+                              onPressed: () =>
+                                  value.removeFavorites(items.restaurant.id),
                               child: const Icon(
                                 Icons.favorite,
                                 color: Colors.red,
@@ -317,8 +319,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             )
                           : FloatingActionButton(
                               backgroundColor: Colors.amber,
-                              onPressed: () =>
-                                  value.addFavorites(items),
+                              onPressed: () => value.addFavorites(items),
                               child: const Icon(
                                 Icons.favorite,
                                 color: Colors.white,
