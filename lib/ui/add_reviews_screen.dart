@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_v2/data/models/customer_reviews/add_request_review_model.dart';
 import 'package:restaurant_v2/provider/add_reviews_provider.dart';
-import 'package:restaurant_v2/utils/widgets/add_comment_widget.dart';
+import 'package:restaurant_v2/widgets/add_comment_widget.dart';
 
 // ignore: must_be_immutable
 class AddReviewsScreen extends StatelessWidget {

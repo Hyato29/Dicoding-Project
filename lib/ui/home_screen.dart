@@ -5,7 +5,7 @@ import 'package:restaurant_v2/data/services/api_services.dart';
 import 'package:restaurant_v2/provider/restaurant_detail_provider.dart';
 import 'package:restaurant_v2/provider/restaurant_provider.dart';
 import 'package:restaurant_v2/ui/detail_screen.dart';
-import 'package:restaurant_v2/utils/widgets/card_widget.dart';
+import 'package:restaurant_v2/widgets/card_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

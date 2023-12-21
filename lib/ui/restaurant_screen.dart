@@ -5,7 +5,7 @@ import 'package:restaurant_v2/data/services/api_services.dart';
 import 'package:restaurant_v2/provider/restaurant_detail_provider.dart';
 import 'package:restaurant_v2/provider/search_restaurant_provider.dart';
 import 'package:restaurant_v2/ui/detail_screen.dart';
-import 'package:restaurant_v2/utils/widgets/items_widget.dart';
+import 'package:restaurant_v2/widgets/items_widget.dart';
 import 'package:restaurant_v2/common/image_urls.dart';
 
 class RestaurantScreen extends StatefulWidget {

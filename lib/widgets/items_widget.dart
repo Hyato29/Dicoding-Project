@@ -39,7 +39,7 @@ class ItemsWidget extends StatelessWidget {
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.1,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+                    const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
                 decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
