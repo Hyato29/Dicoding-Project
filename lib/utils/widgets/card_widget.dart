@@ -36,7 +36,7 @@ class CardWidget extends StatelessWidget {
               right: 0,
               child: Container(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.07,
+                height: MediaQuery.of(context).size.height * 0.06,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
                 decoration: const BoxDecoration(
