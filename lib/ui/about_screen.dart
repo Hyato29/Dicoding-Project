@@ -21,7 +21,7 @@ class AboutScreen extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            Text("Versi 2.0", style: Theme.of(context).textTheme.titleLarge),
+            Text("Versi 3.0", style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(
               height: 15,
             ),
