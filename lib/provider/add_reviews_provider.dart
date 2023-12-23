@@ -66,4 +66,9 @@ class AddReviewsProvider extends ChangeNotifier {
       return _message = "Failed Load Data";
     }
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 }

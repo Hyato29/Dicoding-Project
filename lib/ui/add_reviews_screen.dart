@@ -13,7 +13,6 @@ class AddReviewsScreen extends StatelessWidget {
   TextEditingController nameController = TextEditingController();
   TextEditingController reviewController = TextEditingController();
   
-
   @override
   Widget build(BuildContext context) {
     return Consumer<AddReviewsProvider>(

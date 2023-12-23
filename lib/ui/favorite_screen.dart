@@ -29,8 +29,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 itemBuilder: (context, index) {
                   var items = value.favorites[index].restaurant;
                   return InkWell(
-                    onTap: () async {
-                      await Navigator.push(context,
+                    onTap: () {
+                      Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         String id = items.id;
                         return ChangeNotifierProvider<RestaurantDetailProvider>(
@@ -122,15 +122,17 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                             bottom: MediaQuery.of(context).size.height * 0.1,
                             right: MediaQuery.of(context).size.width * 0.05,
                             child: ClipOval(
-                              child: FloatingActionButton(
-                                backgroundColor: Colors.amber,
-                                onPressed: () {
-                                  value.removeFavorites(
-                                      value.favorites[index].restaurant.id);
-                                },
-                                child: const Icon(
-                                  Icons.favorite,
-                                  color: Colors.red,
+                              child: Container(
+                                color: Colors.amber,
+                                child: IconButton(
+                                  onPressed: () {
+                                    value.removeFavorites(
+                                        value.favorites[index].restaurant.id);
+                                  },
+                                  icon: const Icon(
+                                    Icons.favorite,
+                                    color: Colors.red,
+                                  ),
                                 ),
                               ),
                             ),

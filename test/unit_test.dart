@@ -20,7 +20,7 @@ void main() {
 
     test('Test getRestaurantDetail success', () async {
       const restaurantId =
-          'rqdv5juczeskfw1e867'; // replace with a valid restaurant ID
+          'rqdv5juczeskfw1e867';
       final result = await apiService.getRestaurantDetail(restaurantId);
       expect(result, isA<RestaurantDetailModel>());
     });
@@ -61,7 +61,6 @@ void main() {
     expect(restaurantModel.count, 1);
     expect(restaurantModel.restaurants.length, 1);
 
-    // Check details for the first restaurant
     expect(restaurantModel.restaurants[0].id, 'rqdv5juczeskfw1e867');
     expect(restaurantModel.restaurants[0].name, 'Melting Pot');
     expect(restaurantModel.restaurants[0].description,

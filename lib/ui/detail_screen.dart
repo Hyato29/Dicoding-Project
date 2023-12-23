@@ -4,11 +4,11 @@ import 'package:restaurant_v2/data/db/database_helper.dart';
 import 'package:restaurant_v2/data/models/loading_state.dart';
 import 'package:restaurant_v2/data/models/restaurant_detail_model.dart';
 import 'package:restaurant_v2/data/services/api_services.dart';
+import 'package:restaurant_v2/main_page.dart';
 import 'package:restaurant_v2/provider/add_reviews_provider.dart';
 import 'package:restaurant_v2/provider/database_provider.dart';
 import 'package:restaurant_v2/provider/restaurant_detail_provider.dart';
 import 'package:restaurant_v2/ui/add_reviews_screen.dart';
-import 'package:restaurant_v2/ui/home_screen.dart';
 import 'package:restaurant_v2/widgets/comment_widget.dart';
 import 'package:restaurant_v2/widgets/foods_widget.dart';
 import 'package:restaurant_v2/common/image_urls.dart';
@@ -53,10 +53,10 @@ class _DetailScreenState extends State<DetailScreen> {
         leading: IconButton(
           icon: const Icon(Icons.keyboard_arrow_left_rounded),
           onPressed: () {
-            Navigator.pushReplacement(context,
+            Navigator.pushAndRemoveUntil(context,
                 MaterialPageRoute(builder: (context) {
-              return const HomeScreen();
-            }));
+              return const MainPage();
+            }), (route) => false);
           },
         ),
         elevation: 0,
@@ -314,21 +314,25 @@ class _DetailScreenState extends State<DetailScreen> {
                     right: MediaQuery.of(context).size.width * 0.05,
                     child: ClipOval(
                       child: isFavorites
-                          ? FloatingActionButton(
-                              backgroundColor: Colors.amber,
-                              onPressed: () =>
-                                  value.removeFavorites(items.restaurant.id),
-                              child: const Icon(
-                                Icons.favorite,
-                                color: Colors.red,
+                          ? Container(
+                              color: Colors.amber,
+                              child: IconButton(
+                                onPressed: () =>
+                                    value.removeFavorites(items.restaurant.id),
+                                icon: const Icon(
+                                  Icons.favorite,
+                                  color: Colors.red,
+                                ),
                               ),
                             )
-                          : FloatingActionButton(
-                              backgroundColor: Colors.amber,
-                              onPressed: () => value.addFavorites(items),
-                              child: const Icon(
-                                Icons.favorite,
-                                color: Colors.white,
+                          : Container(
+                              color: Colors.amber,
+                              child: IconButton(
+                                onPressed: () => value.addFavorites(items),
+                                icon: const Icon(
+                                  Icons.favorite,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                     ),
