@@ -12,7 +12,7 @@ import '../models/failure_exception.dart';
 
 class ApiService {
   static const String _baseUrl = 'https://restaurant-api.dicoding.dev/';
-
+  
   Future<RestaurantModel> getRestaurant() async {
     try {
       final response = await http.get(

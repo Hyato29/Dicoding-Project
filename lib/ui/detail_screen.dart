@@ -8,6 +8,7 @@ import 'package:restaurant_v2/provider/add_reviews_provider.dart';
 import 'package:restaurant_v2/provider/database_provider.dart';
 import 'package:restaurant_v2/provider/restaurant_detail_provider.dart';
 import 'package:restaurant_v2/ui/add_reviews_screen.dart';
+import 'package:restaurant_v2/ui/home_screen.dart';
 import 'package:restaurant_v2/widgets/comment_widget.dart';
 import 'package:restaurant_v2/widgets/foods_widget.dart';
 import 'package:restaurant_v2/common/image_urls.dart';
@@ -52,7 +53,10 @@ class _DetailScreenState extends State<DetailScreen> {
         leading: IconButton(
           icon: const Icon(Icons.keyboard_arrow_left_rounded),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) {
+              return const HomeScreen();
+            }));
           },
         ),
         elevation: 0,

@@ -14,7 +14,7 @@ class SettingScreen extends StatelessWidget {
           children: [
             Material(
               child: ListTile(
-                title: const Text('Scheduling News'),
+                title: const Text('Restaurant Notification'),
                 trailing: Consumer<SchedulingProvider>(
                   builder: (context, scheduled, child) {
                     return Switch.adaptive(

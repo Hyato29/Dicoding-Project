@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (context, value, child) {
                       if (value.state == LoadingState.loading) {
                         return const Center(
-                          child: CircularProgressIndicator(),
+                          child: Center(child: CircularProgressIndicator()),
                         );
                       } else if (value.state == LoadingState.loaded) {
                         return cardItem(value);
@@ -83,10 +83,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         );
                       } else if (value.state == LoadingState.error) {
-                        return Center(
-                          child: Material(
-                            child: Text(value.message),
-                          ),
+                        return Material(
+                          child: Text(value.message),
                         );
                       }
                       return const SizedBox();
