@@ -1,33 +1,61 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart';
 import 'package:restaurant_v2/data/models/restaurant_detail_model.dart';
 import 'package:restaurant_v2/data/models/restaurant_model.dart';
 import 'package:restaurant_v2/data/models/search_restaurant_model.dart';
 import 'package:restaurant_v2/data/services/api_services.dart';
+import 'package:http/testing.dart';
 
 void main() {
-  
   group('ApiService Tests', () {
-    late ApiService apiService;
+    test("Testing getRestaurant Success", () async {
+      final client = MockClient((request) async {
+        final response = {
+          "error": false,
+          "message": "success",
+          "count": 20,
+          "restaurants": []
+        };
+        return Response(jsonEncode(response), 200);
+      });
 
-    setUp(() {
-      apiService = ApiService();
-    });
-
-    test('Test getRestaurant success', () async {
+      final apiService = ApiService(client: client);
       final result = await apiService.getRestaurant();
+
       expect(result, isA<RestaurantModel>());
     });
 
-    test('Test getRestaurantDetail success', () async {
-      const restaurantId =
-          'rqdv5juczeskfw1e867';
-      final result = await apiService.getRestaurantDetail(restaurantId);
+    test("Testing getRestaurantDetail Success", () async {
+      final client = MockClient((request) async {
+        final response = {
+          "error": false,
+          "message": "success",
+          "restaurants": []
+        };
+        return Response(jsonEncode(response), 200);
+      });
+
+      const String id = "rqdv5juczeskfw1e867";
+
+      final apiService = ApiService(client: client);
+      final result = await apiService.getRestaurantDetail(id);
+
       expect(result, isA<RestaurantDetailModel>());
     });
 
-    test('Test getSearchRestaurant success', () async {
-      const query = 'Melting';
+    test("Testing getSearchRestaurant Success", () async {
+      final client = MockClient((request) async {
+        final response = {"error": false, "founded": 1, "restaurants": []};
+        return Response(jsonEncode(response), 200);
+      });
+
+      const String query = "Melting";
+
+      final apiService = ApiService(client: client);
       final result = await apiService.getSearchRestaurant(query);
+
       expect(result, isA<SearchRestaurantModel>());
     });
   });
