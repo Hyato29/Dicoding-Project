@@ -6,7 +6,6 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.amber,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -27,7 +26,7 @@ class AboutScreen extends StatelessWidget {
             ),
             const Icon(
               Icons.restaurant_menu,
-              color: Colors.white,
+              color: Colors.amber,
               size: 80,
             ),
             const SizedBox(
@@ -42,13 +41,13 @@ class AboutScreen extends StatelessWidget {
               width: 100,
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                  color: Colors.amber, borderRadius: BorderRadius.circular(8)),
               child: Center(
                 child: Text("Lisensi",
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge
-                        ?.copyWith(color: Colors.amber)),
+                        ?.copyWith(color: Colors.white)),
               ),
             )
           ],

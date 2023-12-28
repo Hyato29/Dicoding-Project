@@ -11,12 +11,15 @@ import 'package:restaurant_v2/data/models/search_restaurant_model.dart';
 import '../models/failure_exception.dart';
 
 class ApiService {
-  static const String _baseUrl = 'https://restaurant-api.dicoding.dev/';
-  
+  static const String baseUrl = 'https://restaurant-api.dicoding.dev/';
+  final http.Client client;
+
+  ApiService({http.Client? client}) : client = client ?? http.Client();
+
   Future<RestaurantModel> getRestaurant() async {
     try {
       final response = await http.get(
-        Uri.parse("${_baseUrl}list"),
+        Uri.parse("${baseUrl}list"),
       );
       var data = jsonDecode(response.body);
       if (response.statusCode == 200) {
@@ -34,7 +37,7 @@ class ApiService {
   Future<RestaurantDetailModel> getRestaurantDetail(id) async {
     try {
       final response = await http.get(
-        Uri.parse("${_baseUrl}detail/$id"),
+        Uri.parse("${baseUrl}detail/$id"),
       );
       var data = jsonDecode(response.body);
       if (response.statusCode == 200) {
@@ -52,7 +55,7 @@ class ApiService {
   Future<SearchRestaurantModel> getSearchRestaurant(query) async {
     try {
       final response = await http.get(
-        Uri.parse("${_baseUrl}search?q=$query"),
+        Uri.parse("${baseUrl}search?q=$query"),
       );
       var data = jsonDecode(response.body);
       if (response.statusCode == 200) {
@@ -71,7 +74,7 @@ class ApiService {
       AddRequestReviewsModel addRequestReviewsModel) async {
     try {
       final response = await http.post(
-        Uri.parse('${_baseUrl}review'),
+        Uri.parse('${baseUrl}review'),
         body: json.encode(addRequestReviewsModel.toJson()),
         headers: {'Content-Type': 'application/json'},
       );

@@ -1,3 +1,4 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_v2/data/db/database_helper.dart';
@@ -47,8 +48,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    _notificationHelper
-        .configureSelectNotificationSubject(context);
+    _notificationHelper.configureSelectNotificationSubject(context);
   }
 
   @override
@@ -65,48 +65,26 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  BottomNavigationBar navigationBar() {
-    return BottomNavigationBar(
+  CurvedNavigationBar navigationBar() {
+    return CurvedNavigationBar(
         onTap: (index) {
           setState(() {
             currentIndex = index;
           });
         },
-        selectedItemColor: Colors.amber,
-        currentIndex: currentIndex,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        unselectedItemColor: Colors.grey,
+        backgroundColor: Colors.white,
+        color: Colors.amber,
+        animationDuration: const Duration(milliseconds: 400),
         items: navbarItems);
   }
 
-  List<BottomNavigationBarItem> get navbarItems {
-    return [
-      BottomNavigationBarItem(
-          icon: isSelected
-              ? const Icon(Icons.home_outlined)
-              : const Icon(Icons.home),
-          label: "Home"),
-      BottomNavigationBarItem(
-          icon: isSelected
-              ? const Icon(Icons.search_outlined)
-              : const Icon(Icons.search),
-          label: "Search"),
-      BottomNavigationBarItem(
-          icon: isSelected
-              ? const Icon(Icons.favorite_outlined)
-              : const Icon(Icons.favorite),
-          label: "Restaurant"),
-      BottomNavigationBarItem(
-          icon: isSelected
-              ? const Icon(Icons.settings_outlined)
-              : const Icon(Icons.settings),
-          label: "Restaurant"),
-      BottomNavigationBarItem(
-          icon: isSelected
-              ? const Icon(Icons.info_outlined)
-              : const Icon(Icons.info),
-          label: "Tentang"),
+  List<Widget> get navbarItems {
+    return const [
+      Icon(Icons.home, color: Colors.white),
+      Icon(Icons.search, color: Colors.white),
+      Icon(Icons.favorite, color: Colors.white),
+      Icon(Icons.settings, color: Colors.white),
+      Icon(Icons.info, color: Colors.white),
     ];
   }
 }

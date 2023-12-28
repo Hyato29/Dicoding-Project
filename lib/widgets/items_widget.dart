@@ -38,8 +38,7 @@ class ItemsWidget extends StatelessWidget {
               child: Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.1,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+                padding: const EdgeInsets.symmetric(horizontal: 18),
                 decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -47,7 +46,7 @@ class ItemsWidget extends StatelessWidget {
                         bottomRight: Radius.circular(10))),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
                       title,
