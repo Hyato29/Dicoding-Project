@@ -18,7 +18,7 @@ class ApiService {
 
   Future<RestaurantModel> getRestaurant() async {
     try {
-      final response = await http.get(
+      final response = await client.get(
         Uri.parse("${baseUrl}list"),
       );
       var data = jsonDecode(response.body);
@@ -36,7 +36,7 @@ class ApiService {
 
   Future<RestaurantDetailModel> getRestaurantDetail(id) async {
     try {
-      final response = await http.get(
+      final response = await client.get(
         Uri.parse("${baseUrl}detail/$id"),
       );
       var data = jsonDecode(response.body);
@@ -48,13 +48,13 @@ class ApiService {
     } on SocketException {
       throw FailureException('No Internet Connection');
     } catch (e) {
-      throw FailureException('Failed to load list of Restaurant');
+      throw FailureException('Failed to load Restaurant');
     }
   }
 
   Future<SearchRestaurantModel> getSearchRestaurant(query) async {
     try {
-      final response = await http.get(
+      final response = await client.get(
         Uri.parse("${baseUrl}search?q=$query"),
       );
       var data = jsonDecode(response.body);
@@ -66,7 +66,7 @@ class ApiService {
     } on SocketException {
       throw FailureException('No Internet Connection');
     } catch (e) {
-      throw FailureException('Failed to load list of Restaurant');
+      throw FailureException('Failed to Search Restaurant');
     }
   }
 
