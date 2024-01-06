@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
-import 'package:restaurant_v2/data/models/restaurant_detail_model.dart';
 import 'package:restaurant_v2/data/models/restaurant_model.dart';
 import 'package:restaurant_v2/data/models/search_restaurant_model.dart';
 import 'package:restaurant_v2/data/services/api_services.dart';
