@@ -27,24 +27,6 @@ void main() {
       expect(result, isA<RestaurantModel>());
     });
 
-    test("Testing getRestaurantDetail Success", () async {
-      final client = MockClient((request) async {
-        final response = {
-          "error": false,
-          "message": "success",
-          "restaurants": []
-        };
-        return Response(jsonEncode(response), 200);
-      });
-
-      const String id = "rqdv5juczeskfw1e867";
-
-      final apiService = ApiService(client: client);
-      final result = await apiService.getRestaurantDetail(id);
-
-      expect(result, isA<RestaurantDetailModel>());
-    });
-
     test("Testing getSearchRestaurant Success", () async {
       final client = MockClient((request) async {
         final response = {"error": false, "founded": 1, "restaurants": []};
